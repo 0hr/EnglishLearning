@@ -3,21 +3,22 @@ from fastapi import APIRouter, UploadFile, File, HTTPException
 import whisper
 from openai import OpenAI
 from pathlib import Path
+import uuid
 
-router = APIRouter()
+speaking_router = APIRouter()
 
 # Load the smallest Whisper model
 whisper_model = whisper.load_model("base")
 
 # Load the smallest LLaMA model
 client = OpenAI(
-    api_key='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',
+    api_key=os.getenv('OPENAPI_KEY'),
 )
 
 
-@router.post("/speak")
+@speaking_router.post("/test")
 async def generate(file: UploadFile = File(...)):
-    if file.content_type != "audio/m4a":
+    if file.content_type != "audio/wav":
         raise HTTPException(status_code=400, detail="Invalid file type. Only M4A files are supported.")
 
     # Save the uploaded file
@@ -54,9 +55,6 @@ async def generate(file: UploadFile = File(...)):
     )
     assistant_reply = response.choices[0].message.content
 
-    # Generate audio response using OpenAI
-    import uuid
-
     unique_id = uuid.uuid4()
     speech_file_path = Path(f"temp/{unique_id}.mp3")
     with client.with_streaming_response.audio.speech.create(
@@ -66,7 +64,6 @@ async def generate(file: UploadFile = File(...)):
     ) as audio_response:
         audio_response.stream_to_file(speech_file_path)
 
-    # Clean up the temporary file
     os.remove(file_location)
 
     return {
@@ -74,4 +71,6 @@ async def generate(file: UploadFile = File(...)):
         "response": assistant_reply,
         "audio_file_url": f"/audio/{unique_id}.mp3"
     }
+
+
 
