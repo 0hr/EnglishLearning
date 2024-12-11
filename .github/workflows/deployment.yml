@@ -29,12 +29,6 @@ jobs:
               run: |
                   python -m pip install --upgrade pip
                   pip install -r requirements.txt
-            # Install SSH Key
-#            - name: Install SSH Key
-#              run: |
-#                    install -m 600 -D /dev/null ~/.ssh/id_rsa
-#                    echo "${{ secrets.STAGING_SSH_KEY }}" > ~/.ssh/id_rsa
-#                    ssh-keyscan -H ${{ secrets.STAGING_HOST }} > ~/.ssh/known_hosts
             # Run tests
             - name: Run tests
               run: |
@@ -66,12 +60,6 @@ jobs:
               run: |
                   python -m pip install --upgrade pip
                   pip install -r requirements.txt
-            # Install SSH Key
-            - name: Install SSH Key
-              run: |
-                    install -m 600 -D /dev/null ~/.ssh/id_rsa
-                    echo "${{ secrets.PRODUCTION_SSH_KEY }}" > ~/.ssh/id_rsa
-                    ssh-keyscan -H ${{ secrets.PRODUCTION_HOST }} > ~/.ssh/known_hosts
             # Run tests
             - name: Run tests
               run: |
