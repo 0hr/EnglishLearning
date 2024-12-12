@@ -1,4 +1,4 @@
-name: Langauge Learning CI/CD Pipeline
+name: Language Learning CI/CD Pipeline
 
 # When push to staging branch or when create tag starting with v-*
 on:
@@ -10,7 +10,7 @@ on:
             - 'v*'
 
 jobs:
-    # jobs run test and deploy to stating server
+    # jobs run test and deploy to staging server
     deploy_staging:
         if: github.ref == 'refs/heads/staging'
         runs-on: ubuntu-latest # operating system our steps will run on
@@ -24,6 +24,13 @@ jobs:
               uses: actions/setup-python@v2
               with:
                   python-version: '3.12' # Python version we use in the project
+            # Set environment variables
+            - name: Set Environment Variables
+              run: |
+                  echo "DATABASE_URL=sqlite:///db.sqlite3" >> $GITHUB_ENV
+                  echo "TEST_DATABASE_URL=sqlite:///test.sqlite3" >> $GITHUB_ENV
+                  echo "SECRET_KEY=3?6EmUkt%79\u00a3\u00a3za)6CYwFwJw\u00a3vPgqNaZ" >> $GITHUB_ENV
+                  echo "OPENAPI_KEY=13456" >> $GITHUB_ENV
             # Install dependencies
             - name: Install Dependencies
               run: |
@@ -55,6 +62,13 @@ jobs:
               uses: actions/setup-python@v2
               with:
                 python-version: '3.12' # Python version we use in the project
+            # Set environment variables
+            - name: Set Environment Variables
+              run: |
+                  echo "DATABASE_URL=sqlite:///db.sqlite3" >> $GITHUB_ENV
+                  echo "TEST_DATABASE_URL=sqlite:///test.sqlite3" >> $GITHUB_ENV
+                  echo "SECRET_KEY=3?6EmUkt%79\u00a3\u00a3za)6CYwFwJw\u00a3vPgqNaZ" >> $GITHUB_ENV
+                  echo "OPENAPI_KEY=13456" >> $GITHUB_ENV
             # Install dependencies
             - name: Install Dependencies
               run: |
