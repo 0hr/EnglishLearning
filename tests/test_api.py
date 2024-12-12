@@ -59,7 +59,7 @@ def login_user(email, password):
 @then('I should receive a token if the credentials are valid')
 def verify_login_response():
     assert pytest.response.status_code == 200
-    assert "access_token" in pytest.response.json()[0]
+    assert "access_token" in pytest.response.json()
 
 
 @when(parsers.parse('I register a new user with email "{email}" and password "{password}"'))
